@@ -45,10 +45,11 @@ public class Menu {
 		}
 	}
 	public boolean selection () throws NoOptionException{
-		if("yes".equals(scnr.nextLine())){
+		String answer=scnr.nextLine();
+		if(answer.equals("yes")){
 			return true;
 		}
-		else if("no".equals(scnr.nextLine())) {
+		else if(answer.equals("no")) {
 			return false;
 		}
 		else 
@@ -66,10 +67,10 @@ public class Menu {
 				System.out.println("Wrong input");
 			}
 		}
-		if (tmp>n) {
+		if (tmp>n||tmp<0) {
 			throw new NoOptionException("not such option aveliable");
 		}
-		else return n;
+		else return tmp;
 	}
 	
 	public void browseStore(int x) throws NoOptionException{
