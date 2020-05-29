@@ -11,21 +11,28 @@ public class Menu {
 	ShoppingCart cart=null;
 	public void signup() {
 		int tmp=1;
-		System.out.println("your email is not recognized.\n do you want to try again loging in(1) or signup(2)");
+		System.out.println("your email is not recognized.\n do you want to try again loging in(0) or signup(1)");
 		try {
-			tmp = Integer.parseInt(scnr.nextLine());
+			tmp = selection(1);
+		}
+		catch(NoOptionException ex) {
+			System.out.println(ex.getMessage());
 		}
 		catch(NumberFormatException e) {
 			System.out.println("wrong input");
 		}
-		if(tmp==1) {
+		if(tmp==0) {
 			return;
 		}
 		else {
 			User a;
 			System.out.println("do you want to conect as a buyer(0) or owner(1)?");
-			
-			tmp = Integer.parseInt(scnr.nextLine());
+			try {
+			tmp = selection(1);
+			}
+			catch(NoOptionException e) {
+				System.out.println(e.getMessage());
+			}
 			if (tmp==1) {
 				///create owner
 				System.out.print("Insert your name:");
@@ -57,11 +64,10 @@ public class Menu {
 	}
 	public  int selection(int n) throws NoOptionException{
 		int tmp=0;
-		int i=1;
-		while (i!=1) {
+		while (true) {
 			try {
 			tmp=Integer.parseInt(scnr.nextLine());
-			i=0;
+			break;
 			}
 			catch(NumberFormatException e) {
 				System.out.println("Wrong input");
@@ -74,38 +80,50 @@ public class Menu {
 	}
 	
 	public void browseStore(int x) throws NoOptionException{
-		shop.showCategories();
-		System.out.println("those are the avelible categories at the moment");
-		System.out.println("type the  category to see the products or back to go back");
-		String tmp=scnr.nextLine();
-		if (tmp.equals("back")) {
-			return;
-		}
-		else if(tmp.equals("Pen")||tmp.equals("Pencil")||tmp.equals("Notebook")||tmp.equals("Paper")){
-			shop.showProductsInCategories(tmp);
-			try {
-				categoryListing(x);
+		while(true){
+			shop.showCategories();
+			System.out.println("those are the avelible categories at the moment");
+			System.out.println("type the  category to see the products or back to go back");
+			String tmp=scnr.nextLine();
+			if (tmp.equals("back")) {
+				return;
 			}
-			catch(NoOptionException e) {
-				System.out.println(e.getMessage());
+			else if(tmp.equals("Pen")||tmp.equals("Pencil")||tmp.equals("Notebook")||tmp.equals("Paper")){
+				shop.showProductsInCategories(tmp);
+				try {
+					categoryListing(x);
+				}
+				catch(NoOptionException e) {
+					System.out.println(e.getMessage());
+				}
 			}
+			else throw new NoOptionException("sorry the catogory you are looking for is not aveliable at the moment");
 		}
-		else throw new NoOptionException("sorry the catogory you are looking for is not aveliable at the moment");
-			
 		
 	}
 	
 	public void categoryListing(int x) throws NoOptionException{
 		System.out.println("type the code of the product to see mote info about it or 0 to go back");
-		int tmp=Integer.parseInt(scnr.nextLine());
+		int tmp;
+		while(true) {
+			try {
+				tmp=Integer.parseInt(scnr.nextLine());
+				break;
+			}
+			catch (NumberFormatException e) {
+				System.out.println("wrong input");
+			}
+		}
 		try {
 			if(0==tmp){
+				
 				return;
+				
 			}
 			else {
 				if(x==1) {
 					Item item=shop.ShowProduct(tmp);
-					System.out.println("do you want to buy this product?(y/n)");
+					System.out.println("do you want to buy this product?(yes/no)");
 					try {	
 						if(selection()) {
 							try {
@@ -243,111 +261,125 @@ public class Menu {
 	}
 	
 	public void mainMenu(){
-		
+		while(true) {
 		System.out.println("do you want to lanch the program with preadded users and items?(yes/no)");
-		try {	
-			if(selection()) {
-				test();
+		
+			try {	
+				if(selection()) {
+					test();
+					break;
+				}
 			}
-		}
-		catch (NoOptionException e) {
-			System.out.println(e.getMessage());
+			catch (NoOptionException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		List<User>Userlist=user.getUserlist();
 		//loged??
 		while (true) {
 			
 			System.out.println("insert your email");
-			scnr.reset();
 			userEmail=scnr.nextLine();
-			for(User i:Userlist) {
-				if (userEmail.equals(i.getUserEmail())) {
-					if(i.showOwner()) {
-						//owner
-						String mail=i.getUserEmail();
-						String name = i.getUserName();
-						Owner a=new Owner(name,mail);
-						System.out.print("welcome to our Shop ");
-						System.out.println(a.getUserName()+"\nyou are an owner ");
-						System.out.println("you can(browse)the store");
-						System.out.println("you can (check) the status of the costumers conected to the store");
-						System.out.println("you can (add) an item to the store");
-						System.out.println("you can also go (back),(logout)or(exit) the store");
-						String tmp = scnr.nextLine();
-						while (!(tmp.equals("back"))) {
-							if(tmp.equals("browse")) {
-								try {
-									browseStore(2);
-								}
-								catch(Exception e) {
-									System.out.println("error");
-								}
-							}
-							else if(tmp.equals("check")) {
-								check();
-							}
-							else if(tmp.equals("add")) {
-								add();
-							}
-							else if(tmp.equals("exit")) {
-								System.exit(0);
-							}
-							else if(tmp.equals("logout")) {
-								mainMenu();							}
-							
-							else {
-								System.out.println("not such option aveliable");
-							}
+			User i=null;
+			for(User b:Userlist) {
+				if (userEmail.equals(b.getUserEmail())) {
+					i=b;
+					break;
+				}
+			}
+			if(i==null) {
+			//user sinup
+			signup();
+			continue;
+			}
+			
+			if(i.showOwner()) {
+				//owner
+				String mail=i.getUserEmail();
+				String name = i.getUserName();
+				Owner a=new Owner(name,mail);
+				System.out.print("welcome to our Shop ");
+				System.out.println(a.getUserName()+"\nyou are an owner ");
+				String tmp = "";
+				while (!(tmp.equals("back"))) {
+					
+					System.out.println("you can(browse)the store");
+					System.out.println("you can (check) the status of the costumers conected to the store");
+					System.out.println("you can (add) an item to the store");
+					System.out.println("you can also go (back),(logout)or(exit) the store");
+					tmp = scnr.nextLine();
+					if(tmp.equals("browse")) {
+						try {
+							browseStore(2);
 						}
-						
+						catch(Exception e) {
+							System.out.println("error");
+						}
 					}
+					else if(tmp.equals("check")) {
+						check();
+					}
+					else if(tmp.equals("add")) {
+						add();
+					}
+					else if(tmp.equals("exit")) {
+						System.exit(0);
+					}
+					else if(tmp.equals("logout")) {
+						break;						
+					}
+					
 					else {
-						///buyer
-						String mail=i.getUserEmail();
-						String name = i.getUserName();
-						Buyer a=new Buyer(name,mail);
-						cart=a.cart;
-						System.out.print("welcome to our Shop");
-						System.out.println(a.getUserName()+"\nyou have "+a.getbonus()+" bonus,this means you are in the"+a.getbuyerCategory()+"category");
-						System.out.println("you can (browse) the store ");
-						System.out.println("you can (view) your shopping cart");
-						System.out.println("you can (checkout)");
-						System.out.println("also you can go (back),(logout) or exit the program");
-						String tmp=scnr.nextLine();
-						while (!(tmp.equals("back"))) {
-							if(tmp.equals("browse")) {
-								try {
-									browseStore(1);
-								}
-								catch (NoOptionException e) {
-									System.out.println(e.getMessage());
-								}
-							}
-							else if(tmp.equals("view")) {
-								int Bonus=view();
-								a.awardBonus(Bonus);
-							}
-							else if(tmp.equals("checkout")) {
-								int addBonus=cart.checkout();
-								System.out.println("your added bonus are"+addBonus);
-								a.awardBonus(addBonus);
-							}
-							else if(tmp.equals("exit")) {
-								return;
-							}
-							else if(tmp.equals("logout")) {
-								break;
-							}
-							
-							else {
-								System.out.println("not such option aveliable");
-							}
+						System.out.println("not such option aveliable");
+					}
+				}
+				
+			}
+			else {
+				///buyer
+				String mail=i.getUserEmail();
+				String name = i.getUserName();
+				Buyer a=new Buyer(name,mail);
+				cart=a.cart;
+				System.out.print("welcome to our Shop");
+				
+				String tmp="";
+				while (!(tmp.equals("back"))) {
+					System.out.println(a.getUserName()+"\nyou have "+a.getbonus()+" bonus,this means you are in the"+a.getbuyerCategory()+"category");
+					System.out.println("you can (browse) the store ");
+					System.out.println("you can (view) your shopping cart");
+					System.out.println("you can (checkout)");
+					System.out.println("also you can go (back),(logout) or exit the program");
+					tmp=scnr.nextLine();
+					if(tmp.equals("browse")) {
+						try {
+							browseStore(1);
 						}
+						catch (NoOptionException e) {
+							System.out.println(e.getMessage());
+						}
+					}
+					else if(tmp.equals("view")) {
+						int Bonus=view();
+						a.awardBonus(Bonus);
+					}
+					else if(tmp.equals("checkout")) {
+						int addBonus=cart.checkout();
+						System.out.println("your added bonus are"+addBonus);
+						a.awardBonus(addBonus);
+					}
+					else if(tmp.equals("exit")) {
+						System.exit(0);
+					}
+					else if(tmp.equals("logout")) {
+						break;
+					}
+					
+					else {
+						System.out.println("not such option aveliable");
 					}
 				}
 			}
-			//user sinup
-			signup();
 		}
 		
 	}

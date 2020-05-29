@@ -13,18 +13,22 @@ public class ShoppingCart {
 	}
 	public void addItemOrdered(Item item,int no) throws Exception{
 		////chek stock
+		boolean n=false;
 		if(no>item.getstock()) {
 			throw new Exception("not enought stock");
 		}
 		for (ItemOrdered i: orderList) {
 			if(i.item.getid()==item.getid()) {
 				i.updatequantity(i.getquantity()+no);
+				n=true;
 			}
-			else {
+			break;
+		}
+			if(!n) {
 				orderList.add(new ItemOrdered(item,no));
 				item.setstock(item.getstock()-no);
 			}
-		}
+		
 	}
 	public void removeItemOrederd(int code) throws  NoOptionException{
 		int j=0;
@@ -68,7 +72,7 @@ public class ShoppingCart {
 		}
 		else {
 			for (ItemOrdered i: orderList) {
-				System.out.println(i.item.getname()+"   "+i.getquantity()+" "+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()+i.item.getprice());;
+				System.out.println(i.item.getname()+"code"+i.item.getid()+"   ("+i.getquantity()+") "+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()+i.item.getprice());;
 			}
 			double tmp=calculateCourierCost()+calculateNet();
 			System.out.println("Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost()+"\n"+tmp);
