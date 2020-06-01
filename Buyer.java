@@ -7,6 +7,7 @@ public class Buyer extends User {
 	ShoppingCart cart;
 	public void awardBonus(int x) {
 		bonus=bonus+x;
+		setbuyerCategory();
 	}
 	public ShoppingCart getCart() {
 		return cart;

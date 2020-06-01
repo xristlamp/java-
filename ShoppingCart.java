@@ -72,10 +72,10 @@ public class ShoppingCart {
 		}
 		else {
 			for (ItemOrdered i: orderList) {
-				System.out.println(i.item.getname()+"code"+i.item.getid()+"   ("+i.getquantity()+") "+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()+i.item.getprice());;
+				System.out.println(i.item.getname()+" code "+i.item.getid()+"   amount  ("+i.getquantity()+")   price"+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()+i.item.getprice());;
 			}
 			double tmp=calculateCourierCost()+calculateNet();
-			System.out.println("Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost()+"\n"+tmp);
+			System.out.println("Overall Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost()+"\n"+tmp);
 		}
 	}
 	public void clearCart() {
@@ -93,7 +93,7 @@ public class ShoppingCart {
 		Scanner scnr=new Scanner(System.in);
 		double tmp=calculateCourierCost()+calculateNet();
 		System.out.println("your overall cost is"+tmp);
-		System.out.println("do you want to contineu with your order?(type 1 for yes and 0 for no");
+		System.out.println("do you want to continue with your order?(type 1 for yes and 0 for no");
 		int temp=scnr.nextInt();
 		if	(temp==0) {
 			flag=0;

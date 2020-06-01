@@ -131,20 +131,32 @@ public class Menu {
 				if(x==1) {
 					Item item=shop.ShowProduct(tmp);
 					System.out.println("do you want to buy this product?(yes/no)");
-					try {	
-						if(selection()) {
-							try {
-								System.out.println("enter the amount you want to order");
-								cart.addItemOrdered(item, Integer.parseInt(scnr.nextLine()));
-							}
-							catch (Exception e) {
-								System.out.println("not enought stock");
-							}
+					boolean sel=false;
+					while (true) {
+						try {
+							sel=selection();
+							break;
+						}
+						catch (NoOptionException e) {
+							System.out.println(e.getMessage());
 						}
 					}
-					catch(NoOptionException e) {
-						System.out.println(e.getMessage());
-					}
+						
+							if(sel) {
+								boolean i=true;
+								while (i) {
+									try {
+										System.out.println("enter the amount you want to order");
+										cart.addItemOrdered(item, Integer.parseInt(scnr.nextLine()));
+										i=false;
+									}
+									catch (Exception e) {
+										System.out.println("not enought stock");
+									}
+								}
+							}
+						
+					
 				}
 				else {
 					System.out.println("do you want to make changes to this product?(y/n)");
@@ -165,7 +177,7 @@ public class Menu {
 		///returns added bonus if checkout
 		try {
 			cart.showCart();
-			System.out.println("type the code of the product to select it(to delete or change its amount),type (empty) to empty the cart or type (checkout)to checkout");
+			System.out.println("type the code of the product to select it(to delete or change its amount),type (empty) to empty the cart , type (checkout)to checkout or (back) to go back");
 			String tmp=scnr.nextLine();
 			if(tmp.equals("empty")) {
 				cart.clearCart();
@@ -175,6 +187,9 @@ public class Menu {
 				int addBonus=cart.checkout();
 				System.out.println("your added bonus are"+addBonus);
 				return addBonus;
+			}
+			else if(tmp.equals("back")) {
+				return 0;
 			}
 			else {
 				System.out.println("do you want to delete it (0),change the amount(1),or go back(2)?");
@@ -299,7 +314,7 @@ public class Menu {
 					System.out.println("you can(browse)the store");
 					System.out.println("you can (check) the status of the costumers conected to the store");
 					System.out.println("you can (add) an item to the store");
-					System.out.println("you can also go (back),(logout)or(exit) the store");
+					System.out.println("you can also (logout)or(exit) the store");
 					tmp = scnr.nextLine();
 					if(tmp.equals("browse")) {
 						try {
@@ -345,7 +360,7 @@ public class Menu {
 							System.out.println("you can (browse) the store ");
 							System.out.println("you can (view) your shopping cart");
 							System.out.println("you can (checkout)");
-							System.out.println("also you can go (back),(logout) or exit the program");
+							System.out.println("also you can (logout) or exit the program");
 							tmp=scnr.nextLine();
 							if(tmp.equals("browse")) {
 								try {
