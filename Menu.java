@@ -2,6 +2,7 @@ package perikor;
 import java.util.*;
 
 public class Menu {
+	private Owner owner=new Owner("Admin","Admin");
 	Scanner scnr=new Scanner(System.in);
 	private String userEmail;
 	EShop shop=new EShop();
@@ -25,7 +26,7 @@ public class Menu {
 			return;
 		}
 		else {
-			User a;
+			/*User a;
 			System.out.println("do you want to conect as a buyer(0) or owner(1)?");
 			try {
 			tmp = selection(1);
@@ -48,7 +49,13 @@ public class Menu {
 				System.out.print("Insert your email:");
 				String c=scnr.nextLine();
 				a = new Buyer(b,c);
-			}
+			}*/
+			//create buyer
+			System.out.print("Insert your name:");
+			String b=scnr.nextLine();
+			System.out.print("Insert your email:");
+			String c=scnr.nextLine();
+			shop.addBuyer(b,c);
 		}
 	}
 	public boolean selection () throws NoOptionException{
@@ -253,9 +260,9 @@ public class Menu {
 		shop.addItem(3,"Notebook3",4.5,"Description3",5);
 		shop.addItem(3,"Notebook4",6,"Description4",5);
 		shop.addItem(3,"Notebook5",5.2,"Description5",5);
-		shop.addItem(3,"Paper1",10,"Description1",5);
-		shop.addItem(3,"Paper2",11,"Description2",5);
-		shop.addItem(3,"Paper3",12,"Description3",5);
+		shop.addItem(4,"Paper1",10,"Description1",5);
+		shop.addItem(4,"Paper2",11,"Description2",5);
+		shop.addItem(4,"Paper3",12,"Description3",5);
 
 
 	}
@@ -274,17 +281,102 @@ public class Menu {
 				System.out.println(e.getMessage());
 			}
 		}
-		List<User>Userlist=user.getUserlist();
+		
 		//loged??
 		while (true) {
 			
 			System.out.println("insert your email");
 			userEmail=scnr.nextLine();
 			User i=null;
-			for(User b:Userlist) {
-				if (userEmail.equals(b.getUserEmail())) {
-					i=b;
-					break;
+			if (userEmail.equals("Admin")) {
+				//owner
+				
+				System.out.print("welcome to our Shop ");
+				System.out.println(owner.getUserName()+"\nyou are an owner ");
+				String tmp = "";
+				while (true) {
+					
+					System.out.println("you can(browse)the store");
+					System.out.println("you can (check) the status of the costumers conected to the store");
+					System.out.println("you can (add) an item to the store");
+					System.out.println("you can also go (back),(logout)or(exit) the store");
+					tmp = scnr.nextLine();
+					if(tmp.equals("browse")) {
+						try {
+							browseStore(2);
+						}
+						catch(Exception e) {
+							System.out.println("error");
+						}
+					}
+					else if(tmp.equals("check")) {
+						check();
+					}
+					else if(tmp.equals("add")) {
+						add();
+					}
+					else if(tmp.equals("exit")) {
+						System.exit(0);
+					}
+					else if(tmp.equals("logout")) {
+						break;						
+					}
+					
+					else {
+						System.out.println("not such option aveliable");
+					}
+				}
+				
+			}
+			else {
+				for(User b:Buyerlist) {
+					if (userEmail.equals(b.getUserEmail())) {
+						i=b;
+						///buyer
+						String mail=i.getUserEmail();
+						String name = i.getUserName();
+						Buyer a=new Buyer(name,mail);
+						cart=a.cart;
+						System.out.print("welcome to our Shop");
+						
+						String tmp="";
+						while (true) {
+							System.out.println(a.getUserName()+"\nyou have "+a.getbonus()+" bonus,this means you are in the"+a.getbuyerCategory()+"category");
+							System.out.println("you can (browse) the store ");
+							System.out.println("you can (view) your shopping cart");
+							System.out.println("you can (checkout)");
+							System.out.println("also you can go (back),(logout) or exit the program");
+							tmp=scnr.nextLine();
+							if(tmp.equals("browse")) {
+								try {
+									browseStore(1);
+								}
+								catch (NoOptionException e) {
+									System.out.println(e.getMessage());
+								}
+							}
+							else if(tmp.equals("view")) {
+								int Bonus=view();
+								a.awardBonus(Bonus);
+							}
+							else if(tmp.equals("checkout")) {
+								int addBonus=cart.checkout();
+								System.out.println("your added bonus are"+addBonus);
+								a.awardBonus(addBonus);
+							}
+							else if(tmp.equals("exit")) {
+								System.exit(0);
+							}
+							else if(tmp.equals("logout")) {
+								break;
+							}
+							
+							else {
+								System.out.println("not such option aveliable");
+							}
+						}
+						break;
+					}
 				}
 			}
 			if(i==null) {
@@ -293,7 +385,7 @@ public class Menu {
 			continue;
 			}
 			
-			if(i.showOwner()) {
+			/*if(i.showOwner()) {
 				//owner
 				String mail=i.getUserEmail();
 				String name = i.getUserName();
@@ -379,7 +471,7 @@ public class Menu {
 						System.out.println("not such option aveliable");
 					}
 				}
-			}
+			}*/
 		}
 		
 	}

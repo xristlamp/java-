@@ -116,14 +116,18 @@ public class EShop {
 		      System.out.println(i.toString());
 		    }
 	}
-	public Item getItemByld  (int code){
-		///if return->empty no item found
-		Item tmp= new empty();
+	public Item getItemByld  (int code)throws NoOptionException{
+		
+		Item tmp=null;
 		for (Item i:Itemlist) {
 			if (i.getid()==code)
 				tmp=i;
+			
 		}
-		return tmp;
+		if (tmp!=null) {
+			return tmp;
+		}
+		else throw new NoOptionException("not such item aveliable");
 	}
 	public void removeItem(int code) {
 		for (Item i:Itemlist) {
@@ -173,11 +177,15 @@ public class EShop {
 		}
 		
 		for (Item i:Itemlist) {
-			if(true) {////////////////////////////////////////////////
+			
+			char temp=String.valueOf(i.getid()).charAt(0);
+			int no=Character.getNumericValue(temp);
+			if(no==tmp) {
 				System.out.println(i.getBasicInfo()+"\n\n");
 			}
 		}
 	}
+	
 	
 	
 	public Item ShowProduct(int code) throws NoOptionException{
@@ -196,7 +204,6 @@ public class EShop {
 		else 
 			return k;
 	}
-	
 	public void checkStatus() {
 		int j=0;
 		for(Buyer i:Buyerlist) {		
