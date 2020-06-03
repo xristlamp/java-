@@ -10,7 +10,7 @@ public class Menu {
 	User user=new Buyer("","");
 	private List<Item>Itemlist=shop.getItemlist();
 	ShoppingCart cart=null;
-	public void signup() {
+	private void signup() {
 		int tmp=1;
 		System.out.println("your email is not recognized.\n do you want to try again loging in(0) or signup(1)");
 		try {
@@ -58,7 +58,7 @@ public class Menu {
 			shop.addBuyer(b,c);
 		}
 	}
-	public boolean selection () throws NoOptionException{
+	private boolean selection () throws NoOptionException{
 		String answer=scnr.nextLine();
 		if(answer.equals("yes")){
 			return true;
@@ -69,7 +69,7 @@ public class Menu {
 		else 
 			throw new NoOptionException("not such opoion aveliable");
 	}
-	public  int selection(int n) throws NoOptionException{
+	private  int selection(int n) throws NoOptionException{
 		int tmp=0;
 		while (true) {
 			try {
@@ -86,7 +86,7 @@ public class Menu {
 		else return tmp;
 	}
 	
-	public void browseStore(int x) throws NoOptionException{
+	private void browseStore(int x) throws NoOptionException{
 		while(true){
 			shop.showCategories();
 			System.out.println("those are the avelible categories at the moment");
@@ -109,7 +109,7 @@ public class Menu {
 		
 	}
 	
-	public void categoryListing(int x) throws NoOptionException{
+	private void categoryListing(int x) throws NoOptionException{
 		System.out.println("type the code of the product to see mote info about it or 0 to go back");
 		int tmp;
 		while(true) {
@@ -172,7 +172,7 @@ public class Menu {
 		}
 	}
 	
-	public int view()
+	private int view()
 	{
 		///returns added bonus if checkout
 		try {
@@ -232,7 +232,7 @@ public class Menu {
 		}
 		
 	}
-	public void check() {
+	private void check() {
 		shop.checkStatus();
 		System.out.println("enter the number of the costumer to see his/her cart or enter (back) to go back");
 		int select;
@@ -249,10 +249,10 @@ public class Menu {
 		
 	}
 	
-	public void add() {
+	private void add() {
 		shop.addItem();
 	}
-	public void test() {
+	private void test() {
 		shop.addBuyer("UserA", "EmailA");
 		shop.addBuyer("UserB", "EmailB");
 		shop.addBuyer("UserC", "EmailC");

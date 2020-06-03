@@ -5,7 +5,7 @@ public class EShop {
 	private List<Buyer>Buyerlist=new ArrayList<Buyer>();
 	Scanner scnr=new Scanner(System.in);
 	
-	Item temp;
+	
 	public List getItemlist() {
 		return Itemlist;
 	}
