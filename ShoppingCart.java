@@ -4,9 +4,9 @@ import java.util.*;
 
 public class ShoppingCart {
 	private List<ItemOrdered>orderList=new ArrayList<ItemOrdered>();
-	Buyer user;
+	
 	public ShoppingCart (Buyer user) {
-		this.user=user;
+		
 	}
 	public List getOrederList() {
 		return orderList;
@@ -66,34 +66,34 @@ public class ShoppingCart {
 			throw new NoOptionException("item not found");
 		}
 	}
-	public void showCart() throws EmptyCartException{
+	public void showCart(String cat) throws EmptyCartException{
 		if (orderList.size()==0) {
 			throw new EmptyCartException("the cart is empty");
 		}
 		else {
 			for (ItemOrdered i: orderList) {
-				System.out.println(i.item.getname()+" code "+i.item.getid()+"   amount  ("+i.getquantity()+")   price"+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()+i.item.getprice());;
+				System.out.println(i.item.getname()+" id "+i.item.getid()+"   amount  ("+i.getquantity()+")   price:"+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()*i.item.getprice());;
 			}
-			double tmp=calculateCourierCost()+calculateNet();
-			System.out.println("Overall Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost()+"\n"+tmp);
+			double tmp=calculateCourierCost(cat)+calculateNet();
+			System.out.println("Overall Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost(cat)+"\n"+tmp);
 		}
 	}
 	public void clearCart() {
 		orderList.clear();
 	}
-	public int checkout() {
+	public int checkout(String cat) {
 		//if returns 0 no chekc out flag==bonus added
 		int flag=0;
 		try {
-			showCart();
+			showCart(cat);
 		}
 		catch (EmptyCartException e) {
 			System.out.println(e.getMessage());
 		}
 		Scanner scnr=new Scanner(System.in);
-		double tmp=calculateCourierCost()+calculateNet();
+		double tmp=calculateCourierCost(cat)+calculateNet();
 		System.out.println("your overall cost is"+tmp);
-		System.out.println("do you want to continue with your order?(type 1 for yes and 0 for no");
+		System.out.println("do you want to continue with your order?(type 1 for yes and 0 for no)");
 		int temp=scnr.nextInt();
 		if	(temp==0) {
 			flag=0;
@@ -111,16 +111,16 @@ public class ShoppingCart {
 		}
 		return tmp;
 	}
-	public double calculateCourierCost() {
+	public double calculateCourierCost(String cat) {
 		double tmp=calculateNet()/50;
 		if(tmp<=3) {
 			tmp=3;
 		}
-		if(user.getbuyerCategory().equals("SILVER"))
+		if(cat.equals("SILVER"))
 		{
 			tmp=tmp/2;
 		}
-		else if(user.getbuyerCategory().equals("GOLD")) {
+		else if(cat.equals("GOLD")) {
 			tmp=0;
 		}
 		return tmp;

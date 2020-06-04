@@ -6,10 +6,10 @@ public class EShop {
 	Scanner scnr=new Scanner(System.in);
 	
 	
-	public List getItemlist() {
+	public List<Item> getItemlist() {
 		return Itemlist;
 	}
-	public List getBuyerlist() {
+	public List<Buyer> getBuyerlist() {
 		return Buyerlist;
 	}
 	public void addItem(int type,String name,double price,String description,int stock) {
@@ -208,6 +208,7 @@ public class EShop {
 		int j=0;
 		for(Buyer i:Buyerlist) {		
 			System.out.println(j+"  "+i.BuyerStatus());
+			System.out.println("\n\n\n");
 			j++;
 		}
 	}

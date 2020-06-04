@@ -3,13 +3,14 @@ import java.util.*;
 
 public class Menu {
 	private Owner owner=new Owner("Admin","Admin");
+	private Buyer a;
 	Scanner scnr=new Scanner(System.in);
 	private String userEmail;
 	EShop shop=new EShop();
 	private List <Buyer>Buyerlist=shop.getBuyerlist();
 	User user=new Buyer("","");
 	private List<Item>Itemlist=shop.getItemlist();
-	ShoppingCart cart=null;
+	
 	private void signup() {
 		int tmp=1;
 		System.out.println("your email is not recognized.\n do you want to try again loging in(0) or signup(1)");
@@ -26,37 +27,16 @@ public class Menu {
 			return;
 		}
 		else {
-			/*User a;
-			System.out.println("do you want to conect as a buyer(0) or owner(1)?");
-			try {
-			tmp = selection(1);
-			}
-			catch(NoOptionException e) {
-				System.out.println(e.getMessage());
-			}
-			if (tmp==1) {
-				///create owner
-				System.out.print("Insert your name:");
-				String b=scnr.nextLine();
-				System.out.print("Insert your email:");
-				String c=scnr.nextLine();
-				a = new Owner(b,c);
-			}
-			else {
-				//create buyer
-				System.out.print("Insert your name:");
-				String b=scnr.nextLine();
-				System.out.print("Insert your email:");
-				String c=scnr.nextLine();
-				a = new Buyer(b,c);
-			}*/
+			
 			//create buyer
 			System.out.print("Insert your name:");
 			String b=scnr.nextLine();
 			System.out.print("Insert your email:");
 			String c=scnr.nextLine();
 			shop.addBuyer(b,c);
+			System.out.println("you have suchefull been signed up to the EShop");
 		}
+		
 	}
 	private boolean selection () throws NoOptionException{
 		String answer=scnr.nextLine();
@@ -147,7 +127,7 @@ public class Menu {
 								while (i) {
 									try {
 										System.out.println("enter the amount you want to order");
-										cart.addItemOrdered(item, Integer.parseInt(scnr.nextLine()));
+										a.placeOrder(item, Integer.parseInt(scnr.nextLine()));
 										i=false;
 									}
 									catch (Exception e) {
@@ -176,15 +156,15 @@ public class Menu {
 	{
 		///returns added bonus if checkout
 		try {
-			cart.showCart();
+			a.cart.showCart(a.getbuyerCategory());
 			System.out.println("type the code of the product to select it(to delete or change its amount),type (empty) to empty the cart , type (checkout)to checkout or (back) to go back");
 			String tmp=scnr.nextLine();
 			if(tmp.equals("empty")) {
-				cart.clearCart();
+				a.cart.clearCart();
 				return 0;
 			}
 			else if(tmp.equals("checkout")) {
-				int addBonus=cart.checkout();
+				int addBonus=a.cart.checkout(a.getbuyerCategory());
 				System.out.println("your added bonus are"+addBonus);
 				return addBonus;
 			}
@@ -197,7 +177,7 @@ public class Menu {
 					int temp=selection(2);
 					if (temp==0) {
 						try {
-							cart.removeItemOrederd(Integer.parseInt(tmp));
+							a.cart.removeItemOrederd(Integer.parseInt(tmp));
 						}
 						catch (NumberFormatException ex) {
 							System.out.println("wrong input");
@@ -210,7 +190,7 @@ public class Menu {
 					else if(temp==1) {
 						try {
 							System.out.println("what do you want the new quantyty to be?");
-							cart.changeItemOrderedQuantity(Integer.parseInt(tmp),Integer.parseInt(scnr.nextLine()));
+							a.cart.changeItemOrderedQuantity(Integer.parseInt(tmp),Integer.parseInt(scnr.nextLine()));
 						}
 						catch(NumberFormatException excep) {
 							System.out.println("wrong input");
@@ -238,13 +218,27 @@ public class Menu {
 		int select;
 		try {
 			select=selection(shop.getBuyerlist().size());
-			Buyerlist.get(select).cart.showCart();
+			//Buyerlist.get(select).cart.showCart();
+			int j=0;
+			for(Buyer i:Buyerlist) {
+				if(j==select) {
+					i.cart.showCart(a.getbuyerCategory());
+					break;
+				}
+				j++;
+			}
 			System.out.println("do you want to delete this costumer?(y/n)");
 			if("y".equals(scnr.nextLine())) {
 				shop.removeBuyer(select);
 			}
 		}
-		catch (Exception e) {}///falling  to the exception makes the method end so the menu goes one step back
+		catch (EmptyCartException e) {
+			System.out.println("the cart is empty");
+		}
+		catch(NoOptionException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
 		
 		
 	}
@@ -261,6 +255,7 @@ public class Menu {
 		shop.addBuyer("UserF", "EmailF");
 		shop.addBuyer("UserG", "EmailG");
 		shop.addBuyer("UserK", "EmailK");
+		
 		shop.addItem(1,"pen1",1.5,"Descirption1",20);
 		shop.addItem(1,"pen2",3.0,"Descirption2",20);
 		shop.addItem(1,"pen3",1.0,"Descirption3",20);
@@ -278,6 +273,8 @@ public class Menu {
 		shop.addItem(4,"Paper1",10,"Description1",5);
 		shop.addItem(4,"Paper2",11,"Description2",5);
 		shop.addItem(4,"Paper3",12,"Description3",5);
+		Item it=shop.getItemlist().get(3);
+		shop.getBuyerlist().get(2).placeOrder(it, 5);
 
 
 	}
@@ -344,19 +341,19 @@ public class Menu {
 				
 			}
 			else {
-				for(User b:Buyerlist) {
+				for(Buyer b:Buyerlist) {
 					if (userEmail.equals(b.getUserEmail())) {
 						i=b;
 						///buyer
 						String mail=i.getUserEmail();
 						String name = i.getUserName();
-						Buyer a=new Buyer(name,mail);
-						cart=a.cart;
-						System.out.print("welcome to our Shop");
+						a=b;
+						
+						System.out.print("welcome to our Shop ");
 						
 						String tmp="";
 						while (true) {
-							System.out.println(a.getUserName()+"\nyou have "+a.getbonus()+" bonus,this means you are in the"+a.getbuyerCategory()+"category");
+							System.out.println(a.getUserName()+"\nyou have "+a.getbonus()+" bonus,this means you are in the "+a.getbuyerCategory()+" category");
 							System.out.println("you can (browse) the store ");
 							System.out.println("you can (view) your shopping cart");
 							System.out.println("you can (checkout)");
@@ -375,8 +372,8 @@ public class Menu {
 								a.awardBonus(Bonus);
 							}
 							else if(tmp.equals("checkout")) {
-								int addBonus=cart.checkout();
-								System.out.println("your added bonus are"+addBonus);
+								int addBonus=a.cart.checkout(a.getbuyerCategory());
+								System.out.println("your added bonus are: "+addBonus);
 								a.awardBonus(addBonus);
 							}
 							else if(tmp.equals("exit")) {
