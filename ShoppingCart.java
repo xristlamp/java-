@@ -72,7 +72,7 @@ public class ShoppingCart {
 		}
 		else {
 			for (ItemOrdered i: orderList) {
-				System.out.println(i.item.getname()+" id "+i.item.getid()+"   amount  ("+i.getquantity()+")   price:"+i.getquantity()+"+"+i.item.getprice()+"="+i.getquantity()*i.item.getprice());;
+				System.out.println(i.item.getname()+" id "+i.item.getid()+"   amount  ("+i.getquantity()+")   price:"+i.getquantity()+"*"+i.item.getprice()+"="+i.getquantity()*i.item.getprice());
 			}
 			double tmp=calculateCourierCost(cat)+calculateNet();
 			System.out.println("Overall Price:"+calculateNet()+"\nCourier Cost:"+calculateCourierCost(cat)+"\n"+tmp);
