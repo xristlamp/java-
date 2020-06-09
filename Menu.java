@@ -139,8 +139,19 @@ public class Menu {
 					
 				}
 				else {
-					System.out.println("do you want to make changes to this product?(y/n)");
-					if("y".equals(scnr.hasNextLine())) {
+					boolean sel=false;
+					while (true) {
+						System.out.println("do you want to make changes to this product?(yes/no)");
+						
+						try {
+							sel=selection();
+							break;
+						}
+						catch (NoOptionException e) {
+							System.out.println(e.getMessage());
+						}
+					}	
+					if(sel) {
 						System.out.println("enter the new amount of stock");
 						shop.updateItemStock(tmp, Integer.parseInt(scnr.nextLine()));
 					}
@@ -298,6 +309,7 @@ public class Menu {
 		while (true) {
 			
 			System.out.println("insert your email");
+			scnr.reset();
 			userEmail=scnr.nextLine();
 			User i=null;
 			if (userEmail.equals("Admin")) {
