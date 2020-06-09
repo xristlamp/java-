@@ -34,7 +34,7 @@ public class Menu {
 			System.out.print("Insert your email:");
 			String c=scnr.nextLine();
 			shop.addBuyer(b,c);
-			System.out.println("you have suchefull been signed up to the EShop");
+			System.out.println("you have successful been signed up to the EShop \n Log in");
 		}
 		
 	}
@@ -70,7 +70,7 @@ public class Menu {
 		while(true){
 			shop.showCategories();
 			System.out.println("those are the avelible categories at the moment");
-			System.out.println("type the  category to see the products or back to go back");
+			System.out.println("type the  category to see the products or (back) to go back");
 			String tmp=scnr.nextLine();
 			if (tmp.equals("back")) {
 				return;
