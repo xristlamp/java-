@@ -49,27 +49,45 @@ public class EShop {
 	public void addItem() {
 		
 		int i=0;
-		String temp;
+		
 		while(i!=1) {
-			System.out.println("what type of item do you want to add?\nAveliable options are:Pen,Penncil,Notebook,Paper");
+			System.out.println("what type of item do you want to add?\nAveliable options are:Pen,Penncil,Notebook,Paper.Or type (back) to go back");
 			scnr.reset();
 			String tmp=scnr.nextLine();
 			//scnr.reset();
+			if(tmp.equals("back")) {
+				return;
+			}
 			if((tmp.equals("Pen"))||(tmp.equals("Pencil"))||(tmp.equals("Notebook"))||(tmp.equals("Paper"))) {
-				i=1;
+				
 				System.out.println("Insert the name of the item:");
-				String name=scnr.nextLine();
+				String name=scnr.nextLine();;
+				
 				scnr.reset();
 				System.out.println("Insert the price of the item:");
-				temp=scnr.nextLine();
-				double price=Double.parseDouble(temp);
+				double price=0;
+				try {
+					 price=Double.parseDouble(scnr.nextLine());
+					 
+				}
+				catch(NumberFormatException e) {
+					System.out.println("wrong input");
+					continue;
+				}
 				scnr.reset();
 				System.out.println("Insert a description of the product");
 				String descr=scnr.nextLine();
+				
 				scnr.reset();
 				System.out.println("Insert how much stock will the item have");
-				temp = scnr.nextLine();
-				int stock =Integer.parseInt(temp);
+				int stock=0;
+				try {
+					 stock =Integer.parseInt(scnr.nextLine());
+				}
+				catch(NumberFormatException e) {
+					System.out.println("wrong input");
+					continue;
+				}
 				scnr.reset();
 				
 				
@@ -77,27 +95,64 @@ public class EShop {
 					
 					System.out.println("Insert the color of the pen:");
 					String color=scnr.nextLine();
+					
 					scnr.reset();
 					System.out.println("Instert the size of the pens tip:");
-					double tipSize=scnr.nextDouble();
+					double tipSize=0;
+					try {
+						tipSize=Double.parseDouble(scnr.nextLine());
+					}
+					catch(NumberFormatException e) {
+						System.out.println("wrong input");
+						continue;
+					}
 					Itemlist.add(new Pen(name,price,descr,stock,color,tipSize));
 				}
 				else if(tmp.equals("Pencil")) {
 					System.out.println("Instert the size of the pens tip:");
-					double tipSize=scnr.nextDouble();
+					double tipSize=0;
+					try {
+						 tipSize=Double.parseDouble(scnr.nextLine());
+					}
+					catch(NumberFormatException e) {
+						System.out.println("wrong input");
+						continue;
+					}
 					Itemlist.add( new Pencil(name,price,descr,stock,tipSize));
 				}
 				else if(tmp.equals("Notebook")) {
 					System.out.println("Insert the number of sections:");
-					int sec=scnr.nextInt();
+					int sec=0;
+					try {	
+						sec=Integer.parseInt(scnr.nextLine());
+					}
+					catch(NumberFormatException e) {
+						System.out.println("wrong input");
+						continue;
+					}
 					Itemlist.add(new Notebook(name,price,descr,stock,sec));
 				}
 				else {
 					System.out.println("Insert the weight of the paper in gramms:");
-					int weight=scnr.nextInt();
+					int weight=0;
+					try {
+						weight=Integer.parseInt(scnr.nextLine());
+						
+					}
+					catch(NumberFormatException e) {
+						System.out.println("wrong input");
+						continue;
+					}
 					scnr.reset();
 					System.out.println("Insert the amount of pages:");
-					int pages=scnr.nextInt();
+					int pages=0;
+					try {
+						pages=Integer.parseInt(scnr.nextLine());
+					}
+					catch(NumberFormatException e) {
+						System.out.println("wrong input");
+						continue;
+					}
 					Itemlist.add(new Paper(name,price,descr,stock,weight,pages));
 				}
 				
@@ -108,6 +163,7 @@ public class EShop {
 			else {
 				   System.out.println("wrong type of item please insert the corect type");
 			}
+			i=1;
 		}
 		
 	}

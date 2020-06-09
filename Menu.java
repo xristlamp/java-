@@ -225,12 +225,15 @@ public class Menu {
 	}
 	private void check() {
 		shop.checkStatus();
-		System.out.println("enter the number of the costumer to see his/her cart or enter (back) to go back");
+		System.out.println("enter the number of the costumer to see his/her cart or enter (0) to go back");
 		int select;
 		try {
 			select=selection(shop.getBuyerlist().size());
 			//Buyerlist.get(select).cart.showCart();
 			int j=0;
+			if(select==0) {
+				return;
+			}
 			for(Buyer i:Buyerlist) {
 				if(j==select) {
 					i.cart.showCart(a.getbuyerCategory());
@@ -256,6 +259,7 @@ public class Menu {
 	
 	private void add() {
 		shop.addItem();
+		return;
 	}
 	private void test() {
 		shop.addBuyer("UserA", "EmailA");
@@ -312,9 +316,10 @@ public class Menu {
 			scnr.reset();
 			userEmail=scnr.nextLine();
 			User i=null;
+			boolean t=false;
 			if (userEmail.equals("Admin")) {
 				//owner
-				
+				t=true;
 				System.out.print("welcome to our Shop ");
 				System.out.println(owner.getUserName()+"\nyou are an owner ");
 				String tmp = "";
@@ -403,7 +408,7 @@ public class Menu {
 					}
 				}
 			}
-			if(i==null) {
+			if(i==null&&t==false) {
 			//user sinup
 			signup();
 			continue;
