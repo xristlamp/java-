@@ -214,7 +214,7 @@ public class EShop {
 		}
 	}
 	public void showCategories() {
-		System.out.println("the curent categories are:\nPen(1)\nPencli(2)\nNotebook(3)\nPaper(4)");
+		System.out.println("the curent categories are:\nPen\nPencil\nNotebook\nPaper");
 	}
 	public void showProductsInCategories(String item) {
 		//needs exception
